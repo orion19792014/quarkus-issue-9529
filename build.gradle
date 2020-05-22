@@ -1,0 +1,51 @@
+import java.time.LocalDateTime
+plugins {
+    id 'java'
+    id 'io.quarkus' version '1.4.2.Final'
+}
+
+repositories {
+    jcenter()
+    mavenLocal()
+    mavenCentral()
+}
+
+
+apply plugin: 'io.quarkus'
+
+group = 'org.acme'
+project.version = '0.0.1'
+
+sourceCompatibility = '1.11'
+targetCompatibility = '1.11'
+
+
+dependencies {
+    implementation enforcedPlatform("${quarkusPlatformGroupId}:${quarkusPlatformArtifactId}:${quarkusPlatformVersion}")
+    implementation "io.quarkus:quarkus-resteasy"
+    implementation "io.quarkus:quarkus-vertx"
+    implementation "io.quarkus:quarkus-resteasy-jsonb"
+    implementation "io.quarkus:quarkus-hibernate-orm-panache:${panacheVersion}"
+    implementation 'io.quarkus:quarkus-jdbc-postgresql:${postgresVersion}'
+
+    testImplementation "io.quarkus:quarkus-junit5"
+    testImplementation "io.rest-assured:rest-assured"
+    testImplementation "io.quarkus:quarkus-test-h2"
+
+    implementation "io.quarkus:quarkus-hibernate-orm-deployment:${quarkusPlatformVersion}"
+
+    nativeTestImplementation "io.quarkus:quarkus-junit5"
+    nativeTestImplementation "io.rest-assured:rest-assured"
+
+}
+
+test {
+    useJUnitPlatform()
+    reports {
+        junitXml.enabled = true
+    }
+}
+
+compileJava {
+    options.compilerArgs << '-parameters'
+}
